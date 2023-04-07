@@ -37,48 +37,57 @@ int obtemDiaDoAno(struct data d) {
 }
 
 /* DAQUI PARA BAIXO É COM VOCÊS! SIGAM O ENUNCIADO E O HEADER DISPONÍVEL */
-
+//problemas na função obtemdiadoano
 
 struct agenda criaAgenda(int ano){
 	struct agenda agenda;
+	agenda.ano = ano;
 	for (int i=0; i<DIAS_DO_ANO; i++){
 		for (int j=0; j<HORAS_DO_DIA; j++){
 			agenda.agenda_do_ano[i].horas[j] = 0;
 		};
 	};
-	agenda.ano = ano;
 	return agenda;
 }
 
 struct compromisso leCompromisso(){
-	struct compromisso data;
-	printf("\nData: ");
-	scanf("%d %d %d", &data.data_compr.dia, &data.data_compr.mes, &data.data_compr.ano);
-	printf("Horário: ");
-	scanf("%d", &data.hora_compr);
-	printf("\n");
-	return data;
+	struct compromisso compr;
+	scanf("%d %d %d ", &compr.data_compr.dia, &compr.data_compr.mes, &compr.data_compr.ano);
+	compr.hora_compr = obtemHora(compr);
+	return compr;
 }
 
 int obtemHora(struct compromisso compr){
+	scanf("%d", &compr.hora_compr);
 	return compr.hora_compr;
 }
 
 int obtemAno(struct agenda ag){
+	printf("--> Entre com o ano:\n");
+	scanf("%d",&ag.ano);
 	return ag.ano;
 }
 
 int validaData(struct data d, struct agenda ag){
-	if ((d.dia>30) || (d.dia<0)){
+	if ((d.dia<1) || (d.ano != ag.ano)){
 		return 0;
-	};
-	if ((d.mes>12) || (d.mes<0)){
-		return 0;
-	};
-	if (obtemAno(ag) != d.ano){
-		return 0;
-	};
-	return 1;
+	}
+	if ((d.mes == 4) || (d.mes == 6) || (d.mes == 9) || (d.mes == 11)){
+		if (d.dia > 30){
+			return 0;
+		}
+	}
+	if (d.mes == 2){
+		if (d.dia > 28){
+			return 0;
+		}
+	}
+	else{
+		if (d.dia > 31){
+			return 0;
+		}
+	}
+	return 1;	
 }
 
 int verificaDisponibilidade(struct compromisso compr, struct agenda ag){
@@ -92,68 +101,16 @@ int verificaDisponibilidade(struct compromisso compr, struct agenda ag){
 struct agenda marcaCompromisso(struct agenda ag, struct compromisso compr){
 	int dia = obtemDiaDoAno(compr.data_compr);
 	ag.agenda_do_ano[dia].horas[compr.hora_compr] = 1;                       /*põe o compromisso na agenda*/
+	printf("Compromisso inserido com sucesso!\n");
 	return ag;
 }
 
 void listaCompromissos(struct agenda ag){
-	struct data data;
-	printf("DIAS OCUPADOS NA AGENDA:\n");
-	printf("------------------------------ \n| \n");
 	for (int i=0; i<DIAS_DO_ANO; i++){
 		for (int j=0; j<HORAS_DO_DIA; j++){
 			if ((ag.agenda_do_ano[i].horas[j]) == 1){   /*de acordo com a yday do compromisso marcado, é transformado de volta no formato DD/MM/YY*/
-				data.ano = 2023;
-				if (i<31){        /*janeiro*/
-					data.dia= i+1;
-					data.mes= 1;
-				}
-				else if (i<59){   /*fevereiro*/
-					data.dia= i-30;
-					data.mes= 2;
-				}
-				else if (i<90){   /*março*/
-					data.dia= i-58;
-					data.mes= 3;
-				}
-				else if (i<120){  /*abriu*/
-					data.dia= i-89;
-					data.mes= 4;
-				}
-				else if (i<151){  /*maio*/
-					data.dia= i-119;
-					data.mes= 5;
-				}
-				else if (i<181){  /*junho*/
-					data.dia= i-150;
-					data.mes= 6;
-				}
-				else if (i<212){  /*julho*/
-					data.dia= i-180;
-					data.mes= 7;
-				}
-				else if (i<243){  /*agosto*/
-					data.dia= i-211;
-					data.mes= 8;
-				}
-				else if (i<273){  /*setembro*/
-					data.dia= i-242;
-					data.mes= 9;
-				}
-				else if (i<304){  /*outubro*/
-					data.dia= i-272;
-					data.mes= 10;
-				}
-				else if (i<334){  /*novembro*/
-					data.dia= i-303;
-					data.mes= 11;
-				}
-				else {            /*dezembro*/
-					data.dia= i-333;
-					data.mes= 12;
-				}
-				printf("| %d/%d/%d às %d:00 está ocupado\n", data.dia, data.mes, data.ano, j);
+				printf("dia: %d, ano: %d, hora: %d, compromisso!\n", i, ag.ano, j);
 			}
 		}
 	}
-	printf("| \n------------------------------\n");
 }
