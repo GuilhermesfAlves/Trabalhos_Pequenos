@@ -17,6 +17,8 @@ int obtemDiaDoAno(struct data d) {
 	time_t segundos;
 	int dia_do_ano;
 
+	printf("%d/%d/%d\n", d.dia, d.mes, d.ano);
+
 	tipodata.tm_mday = d.dia;
     tipodata.tm_mon = d.mes-1;
     tipodata.tm_year = d.ano-1900;
@@ -33,13 +35,15 @@ int obtemDiaDoAno(struct data d) {
 	 * entre 0 e 364 */
     dia_do_ano = tipodata.tm_yday;
 	
+	printf("%d/%d/%d\n", tipodata.tm_mday, tipodata.tm_mon, tipodata.tm_year);
+	printf("%d\n", dia_do_ano);
 	return dia_do_ano;
 }
 
 /* DAQUI PARA BAIXO É COM VOCÊS! SIGAM O ENUNCIADO E O HEADER DISPONÍVEL */
 //problemas na função obtemdiadoano
 
-struct agenda criaAgenda(int ano){
+struct agenda criaAgenda(int ano){                      /*função para zerar todos os horários da agenda de 2023*/
 	struct agenda agenda;
 	agenda.ano = ano;
 	for (int i=0; i<DIAS_DO_ANO; i++){
@@ -57,7 +61,7 @@ struct compromisso leCompromisso(){
 	return compr;
 }
 
-int obtemHora(struct compromisso compr){
+int obtemHora(struct compromisso compr){     /*não compreendi para que de fato serve essa função*/
 	scanf("%d", &compr.hora_compr);
 	return compr.hora_compr;
 }
@@ -69,21 +73,16 @@ int obtemAno(struct agenda ag){
 }
 
 int validaData(struct data d, struct agenda ag){
-	if ((d.dia<1) || (d.ano != ag.ano)){
+	if ((d.dia<1) || (d.dia > 31) || (d.ano != ag.ano)){               /*data inválida para compromissos em datas negativas e acima de 31 e ano diferente da agenda*/
 		return 0;
 	}
-	if ((d.mes == 4) || (d.mes == 6) || (d.mes == 9) || (d.mes == 11)){
+	if ((d.mes == 4) || (d.mes == 6) || (d.mes == 9) || (d.mes == 11)){       /*data inválida para meses que terminam em 30 e data no dia 31*/
 		if (d.dia > 30){
 			return 0;
 		}
 	}
-	if (d.mes == 2){
+	if (d.mes == 2){                          /*data inválida para dias acima de 28 em fevereiro*/
 		if (d.dia > 28){
-			return 0;
-		}
-	}
-	else{
-		if (d.dia > 31){
 			return 0;
 		}
 	}
