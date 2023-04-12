@@ -13,11 +13,9 @@
  * original. Com isso, pode-se obter o membro tm_yday, que representa o
  * dia do ano representado pela data: um inteiro entre 0 e 364 */
 int obtemDiaDoAno(struct data d) {
-	struct tm tipodata;
+	struct tm tipodata = {0};
 	time_t segundos;
 	int dia_do_ano;
-
-	printf("%d/%d/%d\n", d.dia, d.mes, d.ano);
 
 	tipodata.tm_mday = d.dia;
     tipodata.tm_mon = d.mes-1;
@@ -35,53 +33,50 @@ int obtemDiaDoAno(struct data d) {
 	 * entre 0 e 364 */
     dia_do_ano = tipodata.tm_yday;
 	
-	printf("%d/%d/%d\n", tipodata.tm_mday, tipodata.tm_mon, tipodata.tm_year);
-	printf("%d\n", dia_do_ano);
 	return dia_do_ano;
 }
 
 /* DAQUI PARA BAIXO É COM VOCÊS! SIGAM O ENUNCIADO E O HEADER DISPONÍVEL */
-//problemas na função obtemdiadoano
 
-struct agenda criaAgenda(int ano){                      /*função para zerar todos os horários da agenda de 2023*/
-	struct agenda agenda;
+
+/*função para zerar todos os horários da agenda de 2023*/
+struct agenda criaAgenda(int ano){              
+	struct agenda agenda = {0};
 	agenda.ano = ano;
-	for (int i=0; i<DIAS_DO_ANO; i++){
-		for (int j=0; j<HORAS_DO_DIA; j++){
-			agenda.agenda_do_ano[i].horas[j] = 0;
-		};
-	};
 	return agenda;
 }
 
+/*função para leitura de data e hora de um novo compromisso*/
 struct compromisso leCompromisso(){
 	struct compromisso compr;
-	scanf("%d %d %d ", &compr.data_compr.dia, &compr.data_compr.mes, &compr.data_compr.ano);
+	scanf("%d %d %d %d", &compr.data_compr.dia, &compr.data_compr.mes, &compr.data_compr.ano, &compr.hora_compr);
 	compr.hora_compr = obtemHora(compr);
 	return compr;
 }
 
-int obtemHora(struct compromisso compr){     /*não compreendi para que de fato serve essa função*/
-	scanf("%d", &compr.hora_compr);
+/*retorna a hora de um compromisso*/
+int obtemHora(struct compromisso compr){    
 	return compr.hora_compr;
 }
 
-int obtemAno(struct agenda ag){
-	printf("--> Entre com o ano:\n");
-	scanf("%d",&ag.ano);
+/*retorna o ano de uma agenda*/
+int obtemAno(struct agenda ag){        
 	return ag.ano;
 }
 
 int validaData(struct data d, struct agenda ag){
-	if ((d.dia<1) || (d.dia > 31) || (d.ano != ag.ano)){               /*data inválida para compromissos em datas negativas e acima de 31 e ano diferente da agenda*/
+/*data inválida para compromissos em datas negativas e acima de 31 e ano diferente da agenda*/
+	if ((d.dia<1) || (d.dia > 31) || (d.ano != ag.ano)){       
 		return 0;
 	}
-	if ((d.mes == 4) || (d.mes == 6) || (d.mes == 9) || (d.mes == 11)){       /*data inválida para meses que terminam em 30 e data no dia 31*/
+/*data inválida para meses que terminam em 30 e data no dia 31*/
+	if ((d.mes == 4) || (d.mes == 6) || (d.mes == 9) || (d.mes == 11)){   
 		if (d.dia > 30){
 			return 0;
 		}
 	}
-	if (d.mes == 2){                          /*data inválida para dias acima de 28 em fevereiro*/
+/*data inválida para dias acima de 28 em fevereiro*/
+	if (d.mes == 2){                          
 		if (d.dia > 28){
 			return 0;
 		}
@@ -89,25 +84,29 @@ int validaData(struct data d, struct agenda ag){
 	return 1;	
 }
 
+/*função que verifica se já há um compromisso nessa data e hora*/
 int verificaDisponibilidade(struct compromisso compr, struct agenda ag){
 	int dia = obtemDiaDoAno(compr.data_compr);
-	if ((ag.agenda_do_ano[dia].horas[compr.hora_compr]) == 0){
+	if ((ag.agenda_do_ano[dia].horas[compr.hora_compr]) == 0){             
+	/*se em tal data do ano e tal horario, a agenda estiver ocupado (1), não será marcada*/
 		return 1;
 	}
 	return 0;
 }
 
+/*função que põe o compromisso na agenda*/
 struct agenda marcaCompromisso(struct agenda ag, struct compromisso compr){
 	int dia = obtemDiaDoAno(compr.data_compr);
-	ag.agenda_do_ano[dia].horas[compr.hora_compr] = 1;                       /*põe o compromisso na agenda*/
+	ag.agenda_do_ano[dia].horas[compr.hora_compr] = 1;                       
 	printf("Compromisso inserido com sucesso!\n");
 	return ag;
 }
 
+/*função que lista todos os compromissos*/
 void listaCompromissos(struct agenda ag){
 	for (int i=0; i<DIAS_DO_ANO; i++){
 		for (int j=0; j<HORAS_DO_DIA; j++){
-			if ((ag.agenda_do_ano[i].horas[j]) == 1){   /*de acordo com a yday do compromisso marcado, é transformado de volta no formato DD/MM/YY*/
+			if ((ag.agenda_do_ano[i].horas[j]) == 1){
 				printf("dia: %d, ano: %d, hora: %d, compromisso!\n", i, ag.ano, j);
 			}
 		}
