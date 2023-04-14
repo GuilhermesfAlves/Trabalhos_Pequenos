@@ -2,7 +2,7 @@
 #include "libAgenda2.h"
 
 int main (){
-    char saida; /*variavele de saida do loop*/
+    char saida; /*variavel de saida do loop*/
     struct agenda agenda, *p_agenda;
     struct compromisso compromisso, *p_compromisso;
     p_agenda = &agenda;
