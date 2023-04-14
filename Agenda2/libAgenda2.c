@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 #include <time.h>
-#include "libAgenda.h"
+#include "libAgenda2.h"
 
 #define LIVRE 0
 #define OCUPADA 1
@@ -17,6 +17,7 @@ int obtemDiaDoAno(struct data d){
     time_t segundos;
     int dia_do_ano;
 
+    printf("obtem dia do ano");
     tipodata.tm_mday = d.dia;
     tipodata.tm_mon = d.mes - 1;
     tipodata.tm_year = d.ano - 1900;
@@ -43,17 +44,20 @@ int obtemDiaDoAno(struct data d){
 
 struct agenda criaAgenda(int ano){
     struct agenda agenda = {0};
-	agenda.ano = ano;
+	printf("cria agenda");
+    agenda.ano = ano;
 	return agenda;
 }
 
 /* Dado um compromisso, retorna a hora definida */
 int obtemHora(struct compromisso *compr){
+    printf("obtem hora");
     return compr -> hora_compr; 
 }
 
 /* Retorna o ano atribuido a uma agenda criada */
 int obtemAno(struct agenda *ag){
+    printf("obtem ano");
     return ag -> ano;
 }
 
@@ -61,28 +65,41 @@ int obtemAno(struct agenda *ag){
  * Devolve o compromisso no parametro e retorna 1 se o compromisso
  * eh valido ou 0 caso contrario */
 int leCompromisso(struct agenda *ag, struct compromisso *compr){
-    scanf("%d %d %d %d", &compr->data_compr.dia, &compr->data_compr.mes, &compr->data_compr.ano, &compr->hora_compr);
-    if ((validaData()) && (validaHora()))
+    struct compromisso c;
+    printf("le compr");
+    scanf("%d %d %d %d", &c.data_compr.dia, &c.data_compr.mes, &c.data_compr.ano, &c.hora_compr);
+    if ((validaData(ag, &compr -> data_compr)) && (validaHora(compr))){
+        compr -> data_compr.dia = c.data_compr.dia;
+        compr -> data_compr.mes = c.data_compr.mes;
+        compr -> data_compr.ano = c.data_compr.ano;
+        compr -> hora_compr = c.hora_compr;
         return 1;
+    }
     return 0;
-};
+}
 
 /* Valida um data lida do usuario; 
  * Retorna 1 se a data for valida e 0 caso contrario */
 int validaData(struct agenda *ag, struct data *d){
+    printf("validaData");
     int meses[] = {31,28,31,30,31,30,31,31,30,31,30,31};
-    if (data_compr -> dia > meses[data_compr -> mes])
-        return 0;
-    if (data_compr -> dia<1)
-        return 0;
-    if (data_compr -> ano != ag -> ano)
-        return 0;
+    printf("...");
+    if (d -> dia > meses[d -> mes]){
+        printf("dia estora");
+        return 0;}
+    if (d -> dia<1){
+        printf("%d",d -> dia);
+        return 0;}
+    if (d -> ano != ag -> ano){
+        printf("ano dif");
+        return 0;}
     return 1;
 }
 
 /* Valida uma hora lida do usuario; 
  * Retorna 1 se a hora for valida e 0 caso contrario */
 int validaHora(struct compromisso *compr){
+    printf("valida hora");
     if ((compr -> hora_compr <= 23) || (compr -> hora_compr >= 0))
         return 1;
     return 0;
@@ -90,8 +107,9 @@ int validaHora(struct compromisso *compr){
 
 /* Retorna 0 se data e horario já estiverem ocupados, ou 1 caso contrario */
 int verificaDisponibilidade(struct agenda *ag, struct compromisso *compr){
-    int dia = obtemDiaDoAno(compr.data_compr);
-	if !(ag -> agenda_do_ano[dia].horas[compr -> hora_compr])       
+    int dia = obtemDiaDoAno(compr -> data_compr);
+	printf("verifica disp");
+    if (ag -> agenda_do_ano[dia].horas[compr -> hora_compr] == OCUPADA)        
 	/*se em tal data do ano e tal horario, a agenda estiver ocupado (1), não será marcada*/
 		return 1;
 	return 0;
@@ -102,18 +120,17 @@ int verificaDisponibilidade(struct agenda *ag, struct compromisso *compr){
  * garantir estas informacoes. Portanto, a funcao simplesmente muda o valor
  * da hora do compromisso de livre para ocupado */
 void marcaCompromisso(struct agenda *ag, struct compromisso *compr){
-    int dia = obtemDiaDoAno(compr.data_compr);
-	ag -> agenda_do_ano[dia].horas[compr -> hora_compr] = 1;                       
+    int dia = obtemDiaDoAno(compr -> data_compr);
+	ag -> agenda_do_ano[dia].horas[compr -> hora_compr] = OCUPADA;
+    printf("marca compromisso");                       
 }
 
 /* Mostra as datas e horas de todos os compromissos marcados na agenda.
  * Se a agenda nao tiver compromissos agendados nao imprime nada */
 void listaCompromissos(struct agenda *ag){
-	for (int i=0; i<DIAS_DO_ANO; i++){
-		for (int j=0; j<HORAS_DO_DIA; j++){
-			if ((ag.agenda_do_ano[i].horas[j]) == 1){
-				printf("dia: %d, ano: %d, hora: %d, compromisso!\n", i, ag.ano, j);
-			}
-		}
-	}
+    printf("lista compromisso");
+	for (int i=0; i<DIAS_DO_ANO; i++)
+		for (int j=0; j<HORAS_DO_DIA; j++)
+			if (ag -> agenda_do_ano[i].horas[j])
+				printf("dia: %d, ano: %d, hora: %d, compromisso!\n", i, ag -> ano, j);	
 }

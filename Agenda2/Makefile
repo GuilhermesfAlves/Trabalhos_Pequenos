@@ -14,14 +14,14 @@ CC = gcc
 CFLAGS = -g  -Wall -Werror -Wextra -pedantic
 LDFLAGS = -lm
 
-main: libAgenda.o main.o
-	$(CC) main.o libAgenda.o -o tp2  $(LDFLAGS)
+main: libAgenda2.o main.o
+	$(CC) main.o libAgenda2.o -o tp2  $(LDFLAGS)
 
 main.o : main.c	
 	$(CC) $(CFLAGS) -c main.c
 
-libAgenda.o : libAgenda.c
-	$(CC) $(CFLAGS) -c libAgenda.c
+libAgenda2.o : libAgenda2.c
+	$(CC) $(CFLAGS) -c libAgenda2.c
 
 clean :
 	rm *.o tp2
