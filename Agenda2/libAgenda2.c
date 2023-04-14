@@ -66,16 +66,17 @@ int obtemAno(struct agenda *ag){
 int leCompromisso(struct agenda *ag, struct compromisso *compr){
     scanf("%d %d ", &compr -> data_compr.dia, &compr -> data_compr.mes);
     scanf("%d %d", &compr -> data_compr.ano, &compr -> hora_compr);
-    if ((validaData(ag, &compr -> data_compr)) && (validaHora(compr)) && (verificaDisponibilidade(ag,compr)))
-        return 1;
+    if ((validaData(ag, &compr -> data_compr)) && (validaHora(compr)))
+        if (verificaDisponibilidade(ag,compr))
+            return 1;
     return 0;
 }
 
 /* Valida um data lida do usuario; 
  * Retorna 1 se a data for valida e 0 caso contrario */
 int validaData(struct agenda *ag, struct data *d){
-    int meses[] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
-    if (d -> dia > meses[d -> mes])
+    int meses[] = {31,28,31,30,31,30,31,31,30,31,30,31};
+    if (d -> dia > meses[d -> mes-1])
         return 0;
     if (d -> dia<1)
         return 0;
@@ -87,7 +88,7 @@ int validaData(struct agenda *ag, struct data *d){
 /* Valida uma hora lida do usuario; 
  * Retorna 1 se a hora for valida e 0 caso contrario */
 int validaHora(struct compromisso *compr){
-    if ((compr -> hora_compr <= 23) || (compr -> hora_compr >= 0))
+    if ((compr -> hora_compr <= 23) && (compr -> hora_compr >= 0))
         return 1;
     return 0;
 }
@@ -95,7 +96,6 @@ int validaHora(struct compromisso *compr){
 /* Retorna 0 se data e horario já estiverem ocupados, ou 1 caso contrario */
 int verificaDisponibilidade(struct agenda *ag, struct compromisso *compr){
     int dia = obtemDiaDoAno(compr -> data_compr);
-
     if (ag -> agenda_do_ano[dia].horas[compr -> hora_compr] != OCUPADA)        
 	/*se em tal data do ano e tal horario, a agenda estiver ocupado (1), não será marcada*/
 		return 1;
