@@ -43,7 +43,10 @@ int obtemDiaDoAno(struct data d){
 /* Inicializa a agenda */
 struct agenda criaAgenda(int ano){
     struct agenda agenda;
+<<<<<<< HEAD:Agenda2/libAgenda.c
 
+=======
+>>>>>>> 4007142a73acee1f90065a2ce07827d0c9c0349a:Agenda2/libAgenda2.c
     for (int dias=0; dias<DIAS_DO_ANO; dias++)
         for (int horas=0; horas<HORAS_DO_DIA; horas++)
             agenda.agenda_do_ano[dias].horas[horas] = LIVRE;
@@ -100,7 +103,10 @@ int validaHora(struct compromisso *compr){
  * numa agenda, 1 = data disponivel, 0 = data indisponivel */
 int verificaDisponibilidade(struct agenda *ag, struct compromisso *compr){
     int dia = obtemDiaDoAno(compr -> data_compr);
+<<<<<<< HEAD:Agenda2/libAgenda.c
     
+=======
+>>>>>>> 4007142a73acee1f90065a2ce07827d0c9c0349a:Agenda2/libAgenda2.c
     if (ag -> agenda_do_ano[dia].horas[obtemHora(compr)] != OCUPADA)
 		return 1;
     printf("Data/Hora ocupada, compromisso nao inserido\n");
@@ -110,8 +116,12 @@ int verificaDisponibilidade(struct agenda *ag, struct compromisso *compr){
 /* Marca o compromisso em uma agenda, determinando numa data e hora Ocupada */
 void marcaCompromisso(struct agenda *ag, struct compromisso *compr){
     int dia = obtemDiaDoAno(compr -> data_compr);
+<<<<<<< HEAD:Agenda2/libAgenda.c
 	
     ag -> agenda_do_ano[dia].horas[obtemHora(compr)] = OCUPADA;    
+=======
+	ag -> agenda_do_ano[dia].horas[obtemHora(compr)] = OCUPADA;    
+>>>>>>> 4007142a73acee1f90065a2ce07827d0c9c0349a:Agenda2/libAgenda2.c
     printf("Compromisso inserido com sucesso!\n");               
 }
 
@@ -119,6 +129,10 @@ void marcaCompromisso(struct agenda *ag, struct compromisso *compr){
 void listaCompromissos(struct agenda *ag){
 	for (int dias=0; dias<DIAS_DO_ANO; dias++)
 		for (int horas=0; horas<HORAS_DO_DIA; horas++)
+<<<<<<< HEAD:Agenda2/libAgenda.c
 			if (ag -> agenda_do_ano[dias].horas[horas] == OCUPADA)
+=======
+			if (ag -> agenda_do_ano[i].horas[j] == OCUPADA)
+>>>>>>> 4007142a73acee1f90065a2ce07827d0c9c0349a:Agenda2/libAgenda2.c
 				printf("dia: %3d, ano: %4d, hora: %2d, compromisso!\n", dias, obtemAno(ag), horas);	
 }
