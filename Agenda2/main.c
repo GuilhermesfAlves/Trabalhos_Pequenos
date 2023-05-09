@@ -1,13 +1,11 @@
 #include <stdio.h>
-#include "libAgenda2.h"
+#include "libAgenda.h"
 
 int main (){
     char saida; /* Variavel de saida do loop */
-    struct agenda agenda, *p_agenda;
-    struct compromisso compromisso, *p_compromisso;
+    struct agenda agenda;
+    struct compromisso compromisso;
     int ano; /* Variavel para determinar o ano da agenda */
-    p_agenda = &agenda;
-    p_compromisso = &compromisso;
 
     /* Setagem de ano que o usuario quer na agenda */
     scanf("%d", &ano);
@@ -15,13 +13,13 @@ int main (){
 
     /* Loop para leitura de compromissos ate o usuario
      * digitar 's' */
-    do{
-        if (leCompromisso(p_agenda,p_compromisso))
-            marcaCompromisso(p_agenda,p_compromisso);
+    do {
+        if (leCompromisso(&agenda,&compromisso))
+            marcaCompromisso(&agenda,&compromisso);
 
         scanf(" %c", &saida);
-    }while (saida != 's');
+    } while (saida != 's');
     
-    listaCompromissos(p_agenda);
+    listaCompromissos(&agenda);
     return 0;
 }
