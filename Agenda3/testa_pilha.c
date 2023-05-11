@@ -34,13 +34,13 @@ void teste_push (pilha_t* p, int limite)
     for (i=1; i <= limite; i++)
     {
         printf ("\tEmpilhando %d", i + 10);
-        if (! push (p, i + 10)){
+        if (! push(p, i + 10)){
             printf ("Pilha cheia, nao inseriu.\n");
             return;
         }
         if (pilha_topo (p, &dado))
             printf ("\tTopo = %d\n", dado);
-    }
+    };
 }
 
 void teste_pop_e_topo (pilha_t* p)

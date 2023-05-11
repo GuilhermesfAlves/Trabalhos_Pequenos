@@ -8,7 +8,7 @@
 pilha_t *pilha_cria (){
     pilha_t *p;
 
-    if (p = malloc(sizeof (pilha_t))){
+    if (p = malloc(sizeof (pilha_t)) != NULL){
         p -> tamanho = 0;
         p -> topo = NULL;
         return p;
@@ -22,6 +22,7 @@ void pilha_destroi (pilha_t **pilha){
     pilha_t *p;
 
     p = *pilha;
+    aux = p -> topo;
     while (!pilha_vazia(p)){
         aux = aux -> prox;
         free(p -> topo);
@@ -37,13 +38,14 @@ void pilha_destroi (pilha_t **pilha){
  * em caso de sucesso e 0 em caso de falha.
 */
 int push (pilha_t *pilha, int dado){
-    nodo_t *aux;
+    nodo_t *aux, *nodo;
 
     aux = pilha -> topo;
     if (!(pilha -> topo = malloc(sizeof(nodo_t))))
         return 0;
-    aux -> dado = dado;
-    pilha -> topo = aux;
+    nodo = pilha -> topo;
+    nodo -> prox = aux;
+    nodo -> dado = dado;
     pilha -> tamanho++;
     return 1;
 }
@@ -59,6 +61,7 @@ int pop (pilha_t *pilha, int *dado){
     if (!(pilha -> tamanho))
         return 0;
     aux = pilha -> topo;
+    dado = &aux -> dado;
     aux = aux -> prox;
     free(pilha -> topo);
     pilha -> topo = aux;
@@ -69,21 +72,25 @@ int pop (pilha_t *pilha, int *dado){
 /* Similar ao pop, mas retorna o elemento dado sem remove-lo. */
 int pilha_topo (pilha_t *pilha, int *dado){
     nodo_t *aux;
+    
     if (pilha -> tamanho){
         aux = pilha -> topo;
-        dado = &aux -> dado;
-        return 1;}
+        *dado = aux -> dado;
+        return 1;
+        }
     return 0;
 }
 
 /* Retorna o numero de elementos da pilha, que pode ser 0. */
 int pilha_tamanho (pilha_t *pilha){
+    
     return pilha -> tamanho;
 }
 
 /* Retorna 1 se pilha vazia, 0 em caso contrario. */ 
 int pilha_vazia (pilha_t *pilha){
-    if (pilha -> tamanho == 0)
-        return 1;
-    return 0;
+ 
+    if (pilha -> tamanho)
+        return 0;
+    return 1;
 }
