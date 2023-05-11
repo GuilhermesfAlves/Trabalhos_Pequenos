@@ -1,14 +1,14 @@
-#include "libpilha.h"
+#include "libpilhapar.h"
 #include <stdlib.h>
 
 /* 
  * Cria e retorna uma nova pilha.
  * Retorna NULL em caso de erro de alocação.
 */
-pilha_t *pilha_cria (){
-    pilha_t *p;
+struct pilha *pilha_cria (){
+    struct pilha *p;
 
-    if (p = malloc(sizeof (pilha_t))){
+    if ((p = malloc(sizeof (struct pilha)))){
         p -> tamanho = 0;
         p -> topo = NULL;
         return p;
@@ -17,9 +17,9 @@ pilha_t *pilha_cria (){
 }
 
 /* Desaloca toda memoria da pilha e faz pilha receber NULL. */
-void pilha_destroi (pilha_t **pilha){
-    nodo_t *aux;
-    pilha_t *p;
+void pilha_destroi (struct pilha **pilha){
+    struct nodo *aux;
+    struct pilha *p;
 
     p = *pilha;
     while (!pilha_vazia(p)){
@@ -36,11 +36,11 @@ void pilha_destroi (pilha_t **pilha){
  * Insere dado na pilha (politica LIFO). Retorna 1
  * em caso de sucesso e 0 em caso de falha.
 */
-int push (pilha_t *pilha, int dado){
-    nodo_t *aux;
+int push (struct pilha *pilha, char dado){
+    struct nodo *aux;
 
     aux = pilha -> topo;
-    if (!(pilha -> topo = malloc(sizeof(nodo_t))))
+    if (!(pilha -> topo = malloc(sizeof(struct nodo))))
         return 0;
     aux -> dado = dado;
     pilha -> topo = aux;
@@ -53,7 +53,7 @@ int push (pilha_t *pilha, int dado){
  * no parametro dado. A funcao retorna 1 em caso de 
  * sucesso e 0 no caso da pilha estar vazia.
 */
-int pop (pilha_t *pilha, int *dado){
+int pop (struct pilha *pilha, char *dado){
     struct nodo *aux;
 
     if (!(pilha -> tamanho))
@@ -67,9 +67,10 @@ int pop (pilha_t *pilha, int *dado){
 }
 
 /* Similar ao pop, mas retorna o elemento dado sem remove-lo. */
-int pilha_topo (pilha_t *pilha, int *dado){
-    nodo_t *aux;
-    if (pilha -> tamanho){
+int pilha_topo (struct pilha *pilha, char *dado){
+    struct nodo *aux;
+ 
+    if (pilha_vazia(pilha)){
         aux = pilha -> topo;
         dado = &aux -> dado;
         return 1;}
@@ -77,13 +78,13 @@ int pilha_topo (pilha_t *pilha, int *dado){
 }
 
 /* Retorna o numero de elementos da pilha, que pode ser 0. */
-int pilha_tamanho (pilha_t *pilha){
+int pilha_tamanho (struct pilha *pilha){
     return pilha -> tamanho;
 }
 
 /* Retorna 1 se pilha vazia, 0 em caso contrario. */ 
-int pilha_vazia (pilha_t *pilha){
-    if (pilha -> tamanho == 0)
+int pilha_vazia (struct pilha *pilha){
+    if (!(pilha -> tamanho))
         return 1;
     return 0;
 }
