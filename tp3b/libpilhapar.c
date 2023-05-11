@@ -1,6 +1,6 @@
 #include "libpilhapar.h"
 #include <stdlib.h>
-
+#include <stdio.h>
 /* 
  * Cria e retorna uma nova pilha.
  * Retorna NULL em caso de erro de alocação.
@@ -22,6 +22,7 @@ void pilha_destroi (struct pilha **pilha){
     struct pilha *p;
 
     p = *pilha;
+    aux = p -> topo;
     while (!pilha_vazia(p)){
         aux = aux -> prox;
         free(p -> topo);
@@ -39,10 +40,10 @@ void pilha_destroi (struct pilha **pilha){
 int push (struct pilha *pilha, char dado){
     struct nodo *aux;
 
-    aux = pilha -> topo;
-    if (!(pilha -> topo = malloc(sizeof(struct nodo))))
+    if (!(aux = malloc(sizeof(struct nodo))))
         return 0;
     aux -> dado = dado;
+    aux -> prox = pilha -> topo;
     pilha -> topo = aux;
     pilha -> tamanho++;
     return 1;
@@ -70,7 +71,7 @@ int pop (struct pilha *pilha, char *dado){
 int pilha_topo (struct pilha *pilha, char *dado){
     struct nodo *aux;
  
-    if (pilha_vazia(pilha)){
+    if (!(pilha_vazia(pilha))){
         aux = pilha -> topo;
         dado = &aux -> dado;
         return 1;}
@@ -87,4 +88,19 @@ int pilha_vazia (struct pilha *pilha){
     if (!(pilha -> tamanho))
         return 1;
     return 0;
+}
+
+void imprime_pilha (struct pilha *pilha){
+    struct nodo *aux;
+
+    aux = pilha ->topo;
+    printf("%d", pilha_tamanho(pilha));
+    if (!(pilha_vazia(pilha)))
+        while (aux ->prox){
+            if (aux -> dado == '\n')
+                printf("enter");
+            else    
+                printf("%c ", aux -> dado);
+            aux = aux ->prox;
+        }
 }

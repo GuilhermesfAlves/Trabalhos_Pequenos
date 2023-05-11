@@ -53,4 +53,6 @@ int pilha_tamanho (struct pilha *pilha);
 /* Retorna 1 se pilha vazia, 0 em caso contrario. */ 
 int pilha_vazia (struct pilha *pilha);
 
+void imprime_pilha (struct pilha *pilha);
+
 #endif

@@ -3,32 +3,40 @@
 #define MAX 100
 
 int main(){
-    char s[MAX] = {'\0'}, t=0;
+    char s[MAX] = {'\n'}, t=0;
     int i=0;
     struct pilha *p;
     
     p = pilha_cria();
-
-    scanf("%c",&s[i]);
-    while (s[i] != '\0'){
+    do {
         scanf("%c",&s[i]);
         i++;
-    };
+    } while (s[i-1] != '\n');
 
     i = 0;
-    while (s[i] != '\0'){
-        if ((s[i] == '(') || (s[i] == '[') || (s[i] == '{'))
-            push(p,s[i]);
+    while (s[i] != '\n'){
 
-        if (pilha_topo(p, &t))
-            if ((s[i] == ')') || (s[i] == ']') || (s[i] == '}')) 
-                if (t == s[i])
-                    pop(p, &t);
+            printf("entrouu\n");
+        if ((s[i] == '(') || (s[i] == '[') || (s[i] == '{')){
+            push(p,s[i]);
+            imprime_pilha(p);
+            printf("eentrou\n");
+        }
+
+        else if (pilha_topo(p, &t))
+            if (((s[i] == ')') && (t == '(')) || ((s[i] == ']') && (t == '['))  || ((s[i] == '}') && (t == '}')) ) 
+                pop(p, &t);
+        
         i++;
     }
-    if (pilha_tamanho(p))
-        printf("ok");
+
+    imprime_pilha(p);
+
+    if (pilha_vazia(p))
+        printf("ok\n");
     else 
-        printf("erro");
+        printf("erro\n");
+
     pilha_destroi(&p);
+    return 0;
 }
