@@ -57,7 +57,7 @@ int push (struct pilha *pilha, char dado){
 int pop (struct pilha *pilha, char *dado){
     struct nodo *aux;
 
-    if (!(pilha -> tamanho))
+    if (pilha_vazia(pilha))
         return 0;
     aux = pilha -> topo;
     aux = aux -> prox;
@@ -73,7 +73,7 @@ int pilha_topo (struct pilha *pilha, char *dado){
  
     if (!(pilha_vazia(pilha))){
         aux = pilha -> topo;
-        dado = &aux -> dado;
+        *dado = aux -> dado;
         return 1;}
     return 0;
 }
@@ -85,22 +85,25 @@ int pilha_tamanho (struct pilha *pilha){
 
 /* Retorna 1 se pilha vazia, 0 em caso contrario. */ 
 int pilha_vazia (struct pilha *pilha){
-    if (!(pilha -> tamanho))
-        return 1;
-    return 0;
+    if (pilha -> tamanho)
+        return 0;
+    return 1;
 }
 
 void imprime_pilha (struct pilha *pilha){
     struct nodo *aux;
 
     aux = pilha ->topo;
-    printf("%d", pilha_tamanho(pilha));
-    if (!(pilha_vazia(pilha)))
-        while (aux ->prox){
+    printf("%d\n", pilha_tamanho(pilha));
+    if (!(pilha_vazia(pilha))){
+        printf("%c ", aux -> dado);
+        while (aux -> prox){
+            aux = aux ->prox;
             if (aux -> dado == '\n')
                 printf("enter");
             else    
                 printf("%c ", aux -> dado);
-            aux = aux ->prox;
         }
+        printf("\n");
+    }
 }

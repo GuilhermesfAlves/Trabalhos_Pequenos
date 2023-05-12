@@ -3,11 +3,12 @@
 #define MAX 100
 
 int main(){
-    char s[MAX] = {'\n'}, t=0;
+    char s[MAX] = {'\n'}, t;
     int i=0;
     struct pilha *p;
     
     p = pilha_cria();
+
     do {
         scanf("%c",&s[i]);
         i++;
@@ -16,19 +17,15 @@ int main(){
     i = 0;
     while (s[i] != '\n'){
 
-            printf("entrouu\n");
-        if ((s[i] == '(') || (s[i] == '[') || (s[i] == '{')){
+        if ((s[i] == '(') || (s[i] == '[') || (s[i] == '{'))
             push(p,s[i]);
-            imprime_pilha(p);
-            printf("eentrou\n");
-        }
 
         else if (pilha_topo(p, &t))
-            if (((s[i] == ')') && (t == '(')) || ((s[i] == ']') && (t == '['))  || ((s[i] == '}') && (t == '}')) ) 
+            if (((s[i] == ')') && (t == '(')) || ((s[i] == ']') && (t == '['))  || ((s[i] == '}') && (t == '{')))
                 pop(p, &t);
         
         i++;
-    }
+    };
 
     imprime_pilha(p);
 
@@ -39,4 +36,4 @@ int main(){
 
     pilha_destroi(&p);
     return 0;
-}
+};
