@@ -107,3 +107,12 @@ void imprime_pilha (struct pilha *pilha){
         printf("\n");
     }
 }
+
+char OpostoAbre (char c){
+    if (c == '(')
+        return ')';
+    if (c == '[')
+        return ']';
+    if (c == '{')
+        return '}';
+}

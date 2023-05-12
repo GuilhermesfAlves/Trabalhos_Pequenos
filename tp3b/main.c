@@ -17,17 +17,20 @@ int main(){
     i = 0;
     while (s[i] != '\n'){
 
+        if (((s[i] == ')') || (s[i] == ']') || (s[i] == '}')) && (pilha_vazia(p))){
+            printf("erro\n");
+            return 0;
+        }
+
         if ((s[i] == '(') || (s[i] == '[') || (s[i] == '{'))
             push(p,s[i]);
 
-        else if (pilha_topo(p, &t))
-            if (((s[i] == ')') && (t == '(')) || ((s[i] == ']') && (t == '['))  || ((s[i] == '}') && (t == '{')))
+        else if (pilha_topo(p, &t)){
+            if ((opostoabre(s[i]) == t))
                 pop(p, &t);
-        
+        }
         i++;
     };
-
-    imprime_pilha(p);
 
     if (pilha_vazia(p))
         printf("ok\n");

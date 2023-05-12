@@ -55,4 +55,6 @@ int pilha_vazia (struct pilha *pilha);
 
 void imprime_pilha (struct pilha *pilha);
 
+char OpostoAbre (char c);  
+
 #endif
