@@ -22,21 +22,19 @@ void fila_destroi (fila_t **fila){
     fila_t *f;
 
     f = *fila;
-    while (!(fila_vazia(f))){
-        if (fila_tamanho(f)>1){
-            aux = f -> cabeca -> prox;
-            free (f -> cabeca);
-            f -> cabeca = aux;
-            }
-        else {
-            free (f -> cabeca);
-            f -> cabeca = NULL;
-            f -> cauda = NULL;
-            }
-
+    while (fila_tamanho(f)>1){
+        aux = f -> cabeca -> prox;
+        free (f -> cabeca);
+        f -> cabeca = aux;
         f -> tamanho--; 
     };
+
+    free (f -> cabeca);
+    f -> cabeca = NULL;
+    f -> cauda = NULL;
+
     free(*fila); 
+    *fila = NULL;
 }
 
 /* 

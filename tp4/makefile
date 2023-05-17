@@ -9,7 +9,7 @@ CC = gcc
 	objects = testa_fila.o libfila.o 
      
 all: testa_fila.o libfila.o
-	$(CC) -o testa_fila testa_fila.o libfila.o $(LDFLAGS)
+	$(CC) -o tp4 testa_fila.o libfila.o $(LDFLAGS)
 
 libfila.o: libfila.c
 	$(CC) -c $(CFLAGS) libfila.c
@@ -18,6 +18,6 @@ testa_fila.o: testa_fila.c
 	$(CC) -c $(CFLAGS) testa_fila.c
 
 clean:
-	rm -f $(objects) testa_fila
+	rm -f $(objects) tp4
 
 
