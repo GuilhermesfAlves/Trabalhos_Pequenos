@@ -6,13 +6,13 @@
 pilha_t *pilha_cria (){
     pilha_t *p;
 
-    if ((p = malloc(sizeof (pilha_t)))){
-        p -> tamanho = 0;
-        p -> topo = NULL;
-        return p;
-    }
+    if (!(p = malloc(sizeof (pilha_t))))
+        return NULL;
     
-    return NULL;
+    p -> tamanho = 0;
+    p -> topo = NULL;
+    
+    return p;
 }
 
 /* Desaloca toda memoria da pilha e faz pilha receber NULL. */
@@ -63,10 +63,9 @@ int pop (pilha_t *pilha, int *dado){
         return 0;
 
     aux = pilha -> topo;
+    pilha -> topo = pilha -> topo -> prox;
     *dado = aux -> dado;
-    aux = aux -> prox;
-    free(pilha -> topo);
-    pilha -> topo = aux;
+    free(aux);
     pilha -> tamanho--;
     return 1;
 }
@@ -90,7 +89,7 @@ int pilha_tamanho (pilha_t *pilha){
 /* Retorna 1 se pilha vazia, 0 em caso contrario. */ 
 int pilha_vazia (pilha_t *pilha){
  
-    if (pilha -> tamanho)
+    if (pilha_tamanho(pilha))
         return 0;
 
     return 1;

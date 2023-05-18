@@ -2,6 +2,16 @@
 #include <stdio.h>
 #define MAX 100
 
+char oposto(char t){
+    if (t == '(')
+        return ')';
+    if (t == '[')
+        return ']';
+    if (t == '{')
+        return '}';
+    return '-';
+}
+
 int main(){
     char s[MAX] = {'\n'};
     int i=0, t;
@@ -29,35 +39,36 @@ int main(){
     i = 0;
     while (s[i] != '\n'){
 
-    if (((s[i] == ')') || (s[i] == ']') || (s[i] == '}'))){
-        if (pilha_topo(p,&t)){
-            if (((s[i] == ')') && (t == '(')) || ((s[i] == ']') && (t == '['))|| ((s[i] == '}') && (t == '{'))){
-                pop(p, &t);
-                /*caso onde o topo é '(' e o atual da string é ')'*/
+        if (((s[i] == ')') || (s[i] == ']') || (s[i] == '}'))){
+            if (pilha_topo(p,&t)){
+                if (s[i] == oposto(t)){
+                    pop(p, &t);
+                    /*caso onde o topo é '(' e o atual da string é ')'*/
+                }
+                else
+                    break;
+                    /*caso onde há topo, porém não corresponde ao anterior ex: (]*/
             }
-            else
+            else {
+                if (!push(p,s[i])){
+                    printf("erro de alocação no push");
+                    return 1;
+                }
                 break;
-                /*caso onde há topo, porém não corresponde ao anterior ex: (]*/
-        }
-        else {
+                /*caso onde a pilha está vazia e o char da vez é de fechar parenteses*/
+                /*o push serve somente para colocar algo na pilha, e então cair no
+                * caso onde a pilha não está vazia e então incorreta
+                ]()*/
+                }
+            }
+        
+        /*caso onde se coloca o abre parenteses na pilha*/
+        else if ((s[i] == '(') || (s[i] == '[') || (s[i] == '{'))
             if (!push(p,s[i])){
                 printf("erro de alocação no push");
                 return 1;
-                }
-            break;
-            /*caso onde a pilha está vazia e o char da vez é de fechar parenteses*/
-            /*o push serve somente para colocar algo na pilha, e então cair no
-            * caso onde a pilha não está vazia e então incorreta*/
             }
-        }
-    
-    /*caso onde se coloca o abre parenteses na pilha*/
-    else if ((s[i] == '(') || (s[i] == '[') || (s[i] == '{'))
-        if (!push(p,s[i])){
-            printf("erro de alocação no push");
-            return 1;
-        }
-    i++;
+        i++;
     };
 
     /*veredito*/
